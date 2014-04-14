@@ -4,12 +4,9 @@ import re
 import os
 import threading
 
-from mako.template import Template
 
 class plaInfo():
     def __init__(self, inList, outList, caseHash, optType):
-        # caseHash keys stores opcode first
-        # inList place opcode in MSB
         self.i = []
         self.o = []
         self.opt = optType
@@ -56,9 +53,7 @@ class plaInfo():
             print >>tFile, "%s %s" % (inStr, outStr)
         print >>tFile, ".e\n"
         tFile.close()
-        #plaStr = os.popen('bin/espresso gen.pla').read()
-        os.system('bin/espresso gen.pla > plaFile.pla')
-        #os.system('rm gen.pla')
+        os.system('./espresso gen.pla > plaFile.pla')
 
     def checkThread(self, genStr, casexList, thrNum):
         log = open("thr%s.log" % thrNum, 'w')
@@ -117,7 +112,6 @@ class plaInfo():
                             exprHash[self.o[p]].append(' & '.join(tmpList))
             line = tFile.readline()
         tFile.close()
-        #os.system('rm plaFile.pla')
 
         # Check if any output port undriven
         for k in self.o:
